@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
+﻿
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 
 namespace CalculateurAge.ViewModels
 {
-    internal class BaseViewModel
+    public class BaseViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

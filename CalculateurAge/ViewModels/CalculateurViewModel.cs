@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CalculateurAge.ViewModels
+﻿namespace CalculateurAge.ViewModels
 {
     public class CalculateurViewModel : BaseViewModel
     {
@@ -13,16 +7,12 @@ namespace CalculateurAge.ViewModels
         private string _resultat = "";
         private bool _resultatVisible;
 
+        public CalculateurViewModel(bool resultatVisible) => _resultatVisible = resultatVisible;
+
         public string Nom
         {
-            get { return _nom; }
-            set
-            {
-                if (setField(ref _nom, value))
-                    CalculerCommand.refresh();
-            }
-
-
+            get => _nom;
+            set { if (setField(ref _nom, value)) calculerCommand.Rafraichir(); }
         }
         public DateTime DateNaissance
         {
@@ -42,10 +32,8 @@ namespace CalculateurAge.ViewModels
 
         public CalculateurViewModel()
         {
-            calculerCommand = new RelayCommand(
-                Calculer,
-                () => !string.IsNullOrWhiteSpace(Nom)
-            );
+            calculerCommand = new RelayCommand(calculer, 
+                () => !string.IsNullOrWhiteSpace(Nom));
         }
 
         private void calculer()

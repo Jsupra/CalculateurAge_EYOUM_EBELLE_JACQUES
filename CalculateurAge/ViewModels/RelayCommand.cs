@@ -4,24 +4,23 @@ namespace CalculateurAge.ViewModels
 {
     public class RelayCommand : ICommand
     {
-        private readonly Action _execute;
-        private readonly Func<bool> _canExecute;
-        public RelayCommand(Action execute, 
-                            Func<bool> canExecute = null)
+        private readonly Action _executer;
+        private readonly Func<bool> _peutExecuter;
+        public RelayCommand(Action executer, 
+                            Func<bool> peutExecuter = null)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
+            _executer = executer ?? throw new ArgumentNullException(nameof(executer));
+            _peutExecuter = peutExecuter;
         }
         
-        public bool canExecute(object p) => _canExecute?.Invoke() ?? true;
+        public bool canExecute(object p) => _peutExecuter?.Invoke() ?? true;
 
-        public void Execute(object p) => _execute();
+        public void Execute(object p) => _executer();
 
-        public event EventHandler canExecuteChanged;
         public event EventHandler? CanExecuteChanged;
 
-        public void Refresh()
-            => canExecuteChanged?.Invoke(this, EventArgs.Empty);
+        public void Rafraichir()
+            => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
         public bool CanExecute(object? parameter)
         {
