@@ -1,48 +1,57 @@
-﻿namespace CalculateurAge.ViewModels
+﻿namespace CalculateurAge.ViewModels;
+
+public class CalculateurViewModel : BaseViewModel
 {
-    public class CalculateurViewModel : BaseViewModel
+    private string _nom = "";
+    private DateTime _dateNaissance = DateTime.Today.AddYears(-20);
+    private string _resultat = "";
+    private bool _resultatVisible;
+
+    public string Nom
     {
-        private string _nom = "";
-        private DateTime _DateNaissance = DateTime.Today.AddYears(-20);
-        private string _resultat = "";
-        private bool _resultatVisible;
-
-        public CalculateurViewModel(bool resultatVisible) => _resultatVisible = resultatVisible;
-
-        public string Nom
+        get => _nom;
+        set
         {
-            get => _nom;
-            set { if (setField(ref _nom, value)) calculerCommand.Rafraichir(); }
+            if (SetField(ref _nom, value))
+                CalculerCommand.Rafraichir();
         }
-        public DateTime DateNaissance
-        {
-            get => _DateNaissance;
-            set => setField(ref _DateNaissance, value);
-        }
-        public string Resultat
-        {
-            get => _resultat;
-            set => setField(ref _resultat, value);
-        }
-        public bool ResultatVisible { 
-            get => _resultatVisible;
-            set => setField(ref _resultatVisible, value);
-        }
-        public RelayCommand calculerCommand { get; }
+    }
 
-        public CalculateurViewModel()
-        {
-            calculerCommand = new RelayCommand(calculer, 
-                () => !string.IsNullOrWhiteSpace(Nom));
-        }
+    public DateTime DateNaissance
+    {
+        get => _dateNaissance;
+        set => SetField(ref _dateNaissance, value);
+    }
 
-        private void calculer()
-        {
-            int age = DateTime.Today.Year;
-            if (DateNaissance.Date > DateTime.Today.AddYears(-age)) age--;
+    public string Resultat
+    {
+        get => _resultat;
+        set => SetField(ref _resultat, value);
+    }
 
-            Resultat = $"{Nom}, vous avez ${age} ans";
-            ResultatVisible = true ;
-        }
+    public bool ResultatVisible
+    {
+        get => _resultatVisible;
+        set => SetField(ref _resultatVisible, value);
+    }
+
+ 
+    public RelayCommand CalculerCommand { get; }
+
+    public CalculateurViewModel()
+    {
+        CalculerCommand = new RelayCommand(
+            Calculer,
+            () => !string.IsNullOrWhiteSpace(Nom));
+    }
+
+    private void Calculer()
+    {
+        int age = DateTime.Today.Year - DateNaissance.Year;
+        if (DateNaissance.Date >
+            DateTime.Today.AddYears(-age)) age--;
+
+        Resultat = $"{Nom}, vous avez {age} ans";
+        ResultatVisible = true;
     }
 }

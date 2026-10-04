@@ -1,30 +1,26 @@
 ﻿using System.Windows.Input;
 
-namespace CalculateurAge.ViewModels
+namespace CalculateurAge.ViewModels;
+
+public class RelayCommand : ICommand
 {
-    public class RelayCommand : ICommand
+    private readonly Action _executer;         
+    private readonly Func<bool> _peutExecuter; 
+
+    public RelayCommand(Action executer,
+                        Func<bool> peutExecuter = null)
     {
-        private readonly Action _executer;
-        private readonly Func<bool> _peutExecuter;
-        public RelayCommand(Action executer, 
-                            Func<bool> peutExecuter = null)
-        {
-            _executer = executer ?? throw new ArgumentNullException(nameof(executer));
-            _peutExecuter = peutExecuter;
-        }
-        
-        public bool canExecute(object p) => _peutExecuter?.Invoke() ?? true;
-
-        public void Execute(object p) => _executer();
-
-        public event EventHandler? CanExecuteChanged;
-
-        public void Rafraichir()
-            => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-
-        public bool CanExecute(object? parameter)
-        {
-            throw new NotImplementedException();
-        }
+        _executer = executer;
+        _peutExecuter = peutExecuter;
     }
+
+    public bool CanExecute(object p)
+        => _peutExecuter?.Invoke() ?? true;
+
+    public void Execute(object p) => _executer();
+
+    public event EventHandler CanExecuteChanged;
+
+    public void Rafraichir()
+        => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }

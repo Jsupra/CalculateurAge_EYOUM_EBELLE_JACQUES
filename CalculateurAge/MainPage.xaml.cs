@@ -1,13 +1,12 @@
 ﻿using CalculateurAge.ViewModels;
 
-namespace CalculateurAge
+namespace CalculateurAge;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage()
     {
-        public MainPage()
-        {
-            InitializeComponent();
-            BindingContext = new CalculateurViewModel();
-        }
+        InitializeComponent();
+        BindingContext = new CalculateurViewModel();
     }
 }
